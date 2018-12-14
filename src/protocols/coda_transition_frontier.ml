@@ -55,6 +55,8 @@ module type Transition_frontier_base_intf = sig
     -> t
 
   val find_exn : t -> state_hash -> Breadcrumb.t
+
+  val logger : t -> Logger.t
 end
 
 module type Transition_frontier_intf = sig
@@ -91,8 +93,12 @@ module type Transition_frontier_intf = sig
 
   val attach_breadcrumb_exn : t -> Breadcrumb.t -> unit
 
-  val add_transition_exn :
-    t -> (external_transition, state_hash) With_hash.t -> Breadcrumb.t
+  val add_transition :
+       t
+    -> (external_transition, state_hash) With_hash.t
+    -> ( Breadcrumb.t
+       , [`Validation_error of Error.t | `Fatal_error of exn] )
+       Result.t
 end
 
 module type Catchup_intf = sig

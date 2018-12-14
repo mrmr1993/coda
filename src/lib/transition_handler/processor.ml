@@ -50,11 +50,18 @@ module Make (Inputs : Inputs.S) :
                      Catchup_monitor.watch catchup_monitor ~logger
                        ~time_controller
                        ~timeout_duration:catchup_timeout_duration ~transition
-                 | Some _ ->
-                     ignore
-                       (Transition_frontier.add_transition_exn frontier
-                          transition) ;
-                     Writer.write processed_transition_writer transition ;
-                     Catchup_monitor.notify catchup_monitor ~time_controller
-                       ~transition ) ) ))
+                 | Some _ -> (
+                   match
+                     Transition_frontier.add_transition frontier transition
+                   with
+                   | Error (`Validation_error e) ->
+                       (*TODO: Punish*)
+                       Logger.error
+                         (Inputs.Transition_frontier.logger frontier)
+                         "%s" (Error.to_string_hum e)
+                   | Error (`Fatal_error e) -> raise e
+                   | Ok _ ->
+                       Writer.write processed_transition_writer transition ;
+                       Catchup_monitor.notify catchup_monitor ~time_controller
+                         ~transition ) ) ) ))
 end
