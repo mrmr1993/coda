@@ -634,7 +634,9 @@ module Make (Inputs : Inputs_intf) = struct
             ~root_staged_ledger_diff:None
             ~root_snarked_ledger:
               (Ledger_transfer.transfer_accounts ~src:Genesis.ledger
-                 ~dest:(Ledger_db.create ()))
+                 ~dest:
+                   (Ledger_db.create ?directory_name:config.ledger_db_location
+                      ()))
         in
         let%bind net =
           Net.create config.net_config
