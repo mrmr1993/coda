@@ -1,0 +1,7 @@
+(jbuild_version 1)
+
+(executable
+  ((name inner_product)
+   (modes (native))
+   (preprocess (pps (ppx_jane)))
+   (libraries (snarky))))
