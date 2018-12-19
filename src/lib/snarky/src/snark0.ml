@@ -875,24 +875,35 @@ module Make_basic (Backend : Backend_intf.S) = struct
       in
       fst (go 0 t)
 
-    let run (type a s) ~num_inputs ~input ~next_auxiliary ~aux ?system
+    let run (type a s) ~num_inputs ?input ~next_auxiliary ?aux ?system
         ?(eval_constraints = false) (t0 : (a, s) t) (s0 : s option) =
       next_auxiliary := 1 + num_inputs ;
+      let get_value, store_field_elt, s0 =
+        match (input, aux) with
+        | Some input, Some aux ->
+            let get_value : Cvar.t -> Field.t =
+              let get_one v =
+                let i = Backend.Var.index v in
+                if i <= num_inputs then Field.Vector.get input (i - 1)
+                else Field.Vector.get aux (i - num_inputs - 1)
+              in
+              Cvar.eval get_one
+            and store_field_elt x =
+              let v = Backend.Var.create !next_auxiliary in
+              incr next_auxiliary ;
+              Field.Vector.emplace_back aux x ;
+              v
+            in
+            (get_value, store_field_elt, s0)
+        | _, _ ->
+            let reject _ =
+              failwith "run: Access failed: RC1S state storage was not given."
+            in
+            (reject, reject, None)
+      in
       (* We can't evaluate the constraints if we are not computing over a value. *)
       let eval_constraints = eval_constraints && Option.is_some s0 in
-      let get_value : Cvar.t -> Field.t =
-        let get_one v =
-          let i = Backend.Var.index v in
-          if i <= num_inputs then Field.Vector.get input (i - 1)
-          else Field.Vector.get aux (i - num_inputs - 1)
-        in
-        Cvar.eval get_one
-      and store_field_elt x =
-        let v = Backend.Var.create !next_auxiliary in
-        incr next_auxiliary ;
-        Field.Vector.emplace_back aux x ;
-        v
-      and alloc_var () =
+      let alloc_var () =
         let v = Backend.Var.create !next_auxiliary in
         incr next_auxiliary ; v
       in
@@ -972,13 +983,10 @@ module Make_basic (Backend : Backend_intf.S) = struct
     (* TODO-someday: Add pass to unify variables which have an Equal constraint *)
     let constraint_system ~num_inputs (t : (unit, 's) t) :
         R1CS_constraint_system.t =
-      let input = Field.Vector.create () in
       let next_auxiliary = ref (1 + num_inputs) in
-      let aux = Field.Vector.create () in
       let system = R1CS_constraint_system.create () in
       O1trace.measure "constraint_system" (fun () ->
-          ignore (run ~num_inputs ~input ~next_auxiliary ~aux ~system t None)
-      ) ;
+          ignore (run ~num_inputs ~next_auxiliary ~system t None) ) ;
       system
 
     let auxiliary_input (type s) ~num_inputs (t0 : (unit, s) t) (s0 : s)
