@@ -1,0 +1,6 @@
+(executable
+ (name sign_js)
+ (modes js)
+ (libraries coda_base_nonconsensus)
+ (preprocessor_deps ../../config.mlh)
+ (preprocess (pps ppx_coda ppx_optcomp)))
