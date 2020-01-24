@@ -10,10 +10,12 @@ consensus_mechanism]
 
 open Snark_params
 open Tick
+open Snark_bits
 
 [%%else]
 
 open Snark_params_nonconsensus
+open Snark_bits_nonconsensus
 module Currency = Currency_nonconsensus.Currency
 module Coda_numbers = Coda_numbers_nonconsensus.Coda_numbers
 module Random_oracle = Random_oracle_nonconsensus.Random_oracle
@@ -22,7 +24,6 @@ module Random_oracle = Random_oracle_nonconsensus.Random_oracle
 
 open Currency
 open Coda_numbers
-open Snark_bits
 open Fold_lib
 open Import
 

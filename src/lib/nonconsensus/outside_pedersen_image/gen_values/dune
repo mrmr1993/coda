@@ -1,6 +1,6 @@
 (executable
   (name gen_values)
-  (libraries async core snark_params_nonconsensus
+  (libraries async core_kernel snark_params_nonconsensus
              ppxlib ppx_util)
   (preprocessor_deps ../../../../config.mlh)
   (preprocess

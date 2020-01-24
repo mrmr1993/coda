@@ -2,11 +2,11 @@
 "/src/config.mlh"]
 
 open Core_kernel
-open Snark_bits
 
 [%%ifdef
 consensus_mechanism]
 
+open Snark_bits
 open Bitstring_lib
 open Snark_params
 open Tick
@@ -14,6 +14,7 @@ open Let_syntax
 
 [%%else]
 
+open Snark_bits_nonconsensus
 module Unsigned_extended = Unsigned_extended_nonconsensus.Unsigned_extended
 
 [%%endif]

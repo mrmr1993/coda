@@ -3,7 +3,7 @@
  (public_name currency_nonconsensus)
  (library_flags -linkall)
  (inline_tests)
- (libraries core fold_lib tuple_lib snark_bits bignum_bigint random_oracle_nonconsensus sgn_nonconsensus snark_params_nonconsensus
+ (libraries core_kernel fold_lib tuple_lib snark_bits_nonconsensus bignum_bigint random_oracle_nonconsensus sgn_nonconsensus snark_params_nonconsensus
    unsigned_extended_nonconsensus codable module_version)
  (preprocessor_deps ../../../config.mlh)
  (preprocess

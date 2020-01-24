@@ -2,14 +2,18 @@
 "/src/config.mlh"]
 
 open Core_kernel
-open Snark_bits
 open Fold_lib
 open Tuple_lib
 open Unsigned
 
-[%%ifndef
+[%%ifdef
 consensus_mechanism]
 
+open Snark_bits
+
+[%%else]
+
+open Snark_bits_nonconsensus
 module Unsigned_extended = Unsigned_extended_nonconsensus.Unsigned_extended
 
 [%%endif]

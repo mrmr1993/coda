@@ -2,7 +2,6 @@
 "/src/config.mlh"]
 
 open Core_kernel
-open Snark_bits
 open Fold_lib
 include Intf
 module Intf = Intf
@@ -10,8 +9,14 @@ module Intf = Intf
 [%%ifdef
 consensus_mechanism]
 
+open Snark_bits
+
 let zero_checked =
   Snarky_integer.Integer.constant ~m:Snark_params.Tick.m Bigint.zero
+
+[%%else]
+
+open Snark_bits_nonconsensus
 
 [%%endif]
 
