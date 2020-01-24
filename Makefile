@@ -96,9 +96,9 @@ build_archive: git_hooks reformat-diff
 	ulimit -s 65532 && (ulimit -n 10240 || true) && dune build src/app/archive/archive.exe --profile=$(DUNE_PROFILE)
 	$(info Build complete)
 
-sign_js :
+client_sdk :
 	$(info Starting Build)
-	ulimit -s 65532 && (ulimit -n 10240 || true) && dune build src/app/sign_js/sign_js.bc.js --profile=nonconsensus_dev
+	ulimit -s 65532 && (ulimit -n 10240 || true) && dune build src/app/client_sdk/client_sdk.bc.js --profile=nonconsensus_dev
 	$(info Build complete)
 
 dev: codabuilder containerstart build

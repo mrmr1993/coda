@@ -360,9 +360,8 @@ struct
     type t = Curve.t
   end
 
-  let is_even (t : Impl.Field.t) = not @@ Impl.Field.parity t
-
   (* TODO is this correct? *)
+  let is_even (t : Impl.Field.t) = not @@ Impl.Field.parity t
 
   let sign (d_prime : Private_key.t) m =
     let public_key =

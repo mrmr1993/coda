@@ -1,5 +1,5 @@
 (executable
- (name sign_js)
+ (name client_sdk)
  (modes js)
  (libraries coda_base_nonconsensus)
  (preprocessor_deps ../../config.mlh)
