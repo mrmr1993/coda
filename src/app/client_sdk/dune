@@ -1,6 +1,7 @@
 (executable
  (name client_sdk)
  (modes js)
- (libraries coda_base_nonconsensus)
+ (js_of_ocaml (flags --linkall +nat.js))
+ (libraries coda_base_nonconsensus zarith_stubs_js)
  (preprocessor_deps ../../config.mlh)
  (preprocess (pps ppx_coda ppx_optcomp)))
