@@ -4,7 +4,7 @@
 "/src/config.mlh"]
 
 open Import
-open Core
+open Core_kernel
 
 [%%ifdef
 consensus_mechanism]

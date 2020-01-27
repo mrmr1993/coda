@@ -3,7 +3,7 @@
 [%%import
 "/src/config.mlh"]
 
-open Core
+open Core_kernel
 open Import
 
 [%%ifdef

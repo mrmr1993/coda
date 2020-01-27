@@ -433,7 +433,7 @@ let initialize public_key : t =
 
 let to_input (t : t) =
   let open Random_oracle.Input in
-  let f mk acc field = mk (Core.Field.get field t) :: acc in
+  let f mk acc field = mk (Core_kernel.Field.get field t) :: acc in
   let bits conv = f (Fn.compose bitstring conv) in
   Poly.Fields.fold ~init:[]
     ~public_key:(f Public_key.Compressed.to_input)
@@ -540,7 +540,7 @@ let var_of_t
 module Checked = struct
   let to_input (t : var) =
     let ( ! ) f x = Run.run_checked (f x) in
-    let f mk acc field = mk (Core.Field.get field t) :: acc in
+    let f mk acc field = mk (Core_kernel.Field.get field t) :: acc in
     let open Random_oracle.Input in
     let bits conv =
       f (fun x ->

@@ -6,7 +6,7 @@ open Asttypes
 open Parsetree
 open Longident
 open Async
-open Core
+open Core_kernel
 
 [%%ifdef
 consensus_mechanism]
