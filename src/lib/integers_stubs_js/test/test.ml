@@ -1,14 +1,19 @@
 let test_module (module M : Unsigned.S) =
   let on_int64 ~f ~f_64 x y =
     Format.eprintf "@.x_64, " ;
+    flush stderr ;
     let x_64 = M.to_int64 x in
     Format.eprintf "y_64, " ;
+    flush stderr ;
     let y_64 = M.to_int64 y in
     Format.eprintf "z, " ;
+    flush stderr ;
     let z = f x y in
     Format.eprintf "z_64, " ;
+    flush stderr ;
     let z_64 = f_64 x_64 y_64 in
     Format.eprintf "M.of_int64, " ;
+    flush stderr ;
     let ret = (M.of_int64 z_64, z) in
     Format.eprintf "Done@." ; ret
   in
@@ -21,15 +26,21 @@ let test_module (module M : Unsigned.S) =
   in
   let print (x, y) =
     Format.eprintf "Checking" ;
+    flush stderr ;
     let x' = M.to_int64 x in
     let y' = M.to_int64 y in
     Format.eprintf ":" ;
+    flush stderr ;
     let x' = Int64.to_string x' in
     Format.eprintf ":" ;
+    flush stderr ;
     let y' = Int64.to_string y' in
-    Format.eprintf ":@." ;
-    Format.eprintf "%s = %s?@." x' y' ;
+    Format.eprintf ": " ;
+    flush stderr ;
+    Format.eprintf "%s = %s? " x' y' ;
+    flush stderr ;
     Format.eprintf "%s = %s? " (M.to_string x) (M.to_string y) ;
+    flush stderr ;
     Format.eprintf "%i@." (compare x' y') ;
     ignore (x, y)
   in
